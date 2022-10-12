@@ -1,2 +1,2 @@
 #!/bin/bash
-alias $PATH='/etc/profile/action'
+alias $PATH='PATH/action'
