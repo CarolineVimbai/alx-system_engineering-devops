@@ -1,0 +1,2 @@
+#!/bin/bash
+X = dec2base(BINARY)
