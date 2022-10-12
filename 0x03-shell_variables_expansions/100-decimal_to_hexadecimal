@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "$((#10DECIMAL))"
+echo "$((#10DECIMAL16))"
