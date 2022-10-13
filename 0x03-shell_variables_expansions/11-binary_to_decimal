@@ -1,2 +1,2 @@
 #!/bin/bash
-X = dec2base(BINARY)
+echo "((2#$BINARY))"
