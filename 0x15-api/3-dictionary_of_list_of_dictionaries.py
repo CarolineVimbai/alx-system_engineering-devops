@@ -1,23 +1,35 @@
 #!/usr/bin/python3
-"""Records all tasks from all employees"""
+""" 3-dictionary_of_list_of_dictionaries
+
+    Export data in the JSON format.
+"""
 import json
 import requests
 
+
+def main():
+    """According to user_id, export information in json
+    """
+    users_uri = 'https://jsonplaceholder.typicode.com/users'
+    users = requests.get(users_uri).json()
+    info = {}
+
+    for user in users:
+        user_id = user.get('id')
+        name = user.get('username')
+        todos = 'https://jsonplaceholder.typicode.com/todos?userId={}'.format(
+            user_id)
+        request_todo = requests.get(todos).json()
+        tasks = []
+        for todo in request_todo:
+            task = {"username": name, "task": todo.get("title"),
+                    "completed": todo.get("completed")}
+            tasks.append(task)
+        info[user_id] = tasks
+
+    with open('todo_all_employees.json', 'w+') as file:
+        file.write(json.dumps(info))
+
+
 if __name__ == "__main__":
-    users = requests.get('https://jsonplaceholder.typicode.com/users/')
-    user_dict = {}
-    user_dict2 = {}
-    for user in users.json():
-        uid = user.get("id")
-        user_dict[uid] = []
-        user_dict2[uid] = user.get("username")
-    todos = requests.get('https://jsonplaceholder.typicode.com/todos')
-    for task in todos.json():
-            task_dict = {}
-            uid = task.get("userId")
-            task_dict["task"] = task.get('title')
-            task_dict["completed"] = task.get('completed')
-            task_dict["username"] = user_dict2.get(uid)
-            user_dict.get(uid).append(task_dict)
-    with open("todo_all_employees.json", 'w') as jsonfile:
-        json.dump(user_dict, jsonfile)
+    main()
