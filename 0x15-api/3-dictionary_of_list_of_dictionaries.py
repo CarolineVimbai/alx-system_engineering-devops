@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Script to export data in the JSON format, records all tasks from all employees"""
+"""Records all tasks from all employees"""
 import json
 import requests
 
