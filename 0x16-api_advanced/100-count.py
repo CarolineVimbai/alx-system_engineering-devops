@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"a recursive function that queries the Reddit API"
+"""a recursive function that parses the title of all hot articles"""
 
 
 def count_words(subreddit, word_list, word_count={}, after=None):
