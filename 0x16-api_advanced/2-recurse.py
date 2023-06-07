@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"a recursive function that queries the Reddit API and returns a list containing the titles"
+"a recursive function that returns a list containing the titles"
 
 import requests
 
