@@ -1,22 +1,28 @@
 #!/usr/bin/python3
-"""
-contains the top_ten function
-"""
-
-import requests
+"""containing the titles of all hot articles"""
 
 
-def top_ten(subreddit):
-    """prints the titles of the top ten hot posts for a given subreddit"""
-    if subreddit is None or type(subreddit) is not str:
-        print(None)
-    r = requests.get('http://www.reddit.com/r/{}/hot.json'.format(subreddit),
-                     headers={'User-Agent': 'Python/requests:APIproject:\
-                     v1.0.0 (by /u/aaorrico23)'},
-                     params={'limit': 10}).json()
-    posts = r.get('data', {}).get('children', None)
-    if posts is None or (len(posts) > 0 and posts[0].get('kind') != 't3'):
-        print(None)
-    else:
-        for post in posts:
-            print(post.get('data', {}).get('title', None))
+def recurse(subreddit, hot_list=[], count=0, after=None):
+    """Queries the Reddit API and returns all hot posts
+    of the subreddit"""
+    import requests
+
+    sub_info = requests.get("https://www.reddit.com/r/{}/hot.json"
+                            .format(subreddit),
+                            params={"count": count, "after": after},
+                            headers={"User-Agent": "My-User-Agent"},
+                            allow_redirects=False)
+    if sub_info.status_code >= 400:
+        return None
+
+    hot_l = hot_list + [child.get("data").get("title")
+                        for child in sub_info.json()
+                        .get("data")
+                        .get("children")]
+
+    info = sub_info.json()
+    if not info.get("data").get("after"):
+        return hot_l
+
+    return recurse(subreddit, hot_l, info.get("data").get("count"),
+                   info.get("data").get("after"))
